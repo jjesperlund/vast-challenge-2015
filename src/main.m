@@ -83,7 +83,7 @@ end
 
 %% How many checkins do every person have?
 
-counter = 0;
+counter = 1;
 data_checkin_coordinates_sorted = sortrows(data_checkin_coordinates); 
 numberOfCheckin_perID = ones(numberUnique,2);
 
@@ -96,7 +96,7 @@ for i=1:(length(data_checkin_coordinates_sorted) -1)
         numberOfCheckin_perID(index, 1) = data_checkin_coordinates_sorted(i,1);
         numberOfCheckin_perID(index, 2) = counter;
         index = index + 1;
-        counter = 0;
+        counter = 1;
    end
     
 end    
@@ -134,6 +134,9 @@ for i=1:index
     end
     
 end
+
+
+
 
 
 
