@@ -110,3 +110,33 @@ xlim([min(numberOfCheckin_perID(:,1)) max(numberOfCheckin_perID(:,1))]);
 ylim([0 max_checkins]);
 
 
+%% Diving into 2 groups. Higher than 50 and lower than 10 check-ins.
+counterhigh = 1;
+counterlow = 1;
+counterzero = 1;
+for i=1:index
+    
+    if(numberOfCheckin_perID(i,2) > 50)
+        IDHighCheckin(counterhigh,1) = numberOfCheckin_perID(i,1);
+        IDHighCheckin(counterhigh,2) = numberOfCheckin_perID(i,2);
+        counterhigh = counterhigh + 1;
+    end
+    if(numberOfCheckin_perID(i,2) < 10)
+        IDLowCheckin(counterlow,1) = numberOfCheckin_perID(i,1);
+        IDLowCheckin(counterlow,2) = numberOfCheckin_perID(i,2);
+        counterlow= counterlow + 1;
+        
+    end
+    if(numberOfCheckin_perID(i,2) == 0)
+        IDZeroCheckin(counterzero,1) = numberOfCheckin_perID(i,1);
+        IDZeroCheckin(counterzero,2) = numberOfCheckin_perID(i,2);
+        counterzero = counterzero + 1;
+    end
+    
+end
+
+
+
+
+
+
