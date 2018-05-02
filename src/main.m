@@ -251,7 +251,7 @@ histogram(hour(IDs_and_timestamps_(:,2)))
  
 % Duration
 figure;
-histogram(IDs_and_duration(:,2))
+histogram(IDs_and_duration(:,2), 100)
 xlabel('time spent at the park (minutes)')
 
 
