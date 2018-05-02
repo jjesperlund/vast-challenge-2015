@@ -144,4 +144,68 @@ for i=1:length(Lia)
 end
 
 
+%% What ID's frequently check-in in what area? Tundra Land, Kiddie Land, Wet Land, Coaster Alley
+
+
+for i=1:length(c2)
+    counterTundra = 0;
+    counterKiddie = 0;
+    counterWet = 0;
+    counterCoaster = 0; 
+    counterEntry = 0;
+    counterCheckIn = numberOfCheckin_perID(i,2);
+    id = numberOfCheckin_perID(i,1);
+    c2_coaster(i,1) = id;
+    c2_wet(i,1) = id;
+    c2_tundra(i,1) = id;
+    c2_kiddie(i,1) = id;
+    c2_entry(i,1) = id;
+    
+    while(counterCheckIn ~= 0)
+       
+    if((2700/4013) * 100 < data_checkin_coordinates_sorted(i,3) || (1400*100/4013 < data_checkin_coordinates_sorted(i,3) && 3322*100/4044 < data_checkin_coordinates_sorted(i,2)))
+        counterCoaster = counterCoaster + 1;
+        c2_coaster(i,2) = counterCoaster;
+    end
+    
+    
+    if((2700/4013) * 100 > data_checkin_coordinates_sorted(i,3) && (1800*100/4013 < data_checkin_coordinates_sorted(i,3) && 2700*100/4044 < data_checkin_coordinates_sorted(i,2)))
+        counterWet = counterWet + 1;
+        c2_wet(i,2) = counterWet; 
+        
+    end
+    
+    
+    if((1800/4013)*100 > data_checkin_coordinates_sorted(i,3) && (2050*100/4013 > data_checkin_coordinates_sorted(i,2)))
+        counterTundra = counterTundra + 1;
+        c2_tundra(i,2) = counterTundra;         
+    end
+    
+    
+    
+    if((2900/4013) * 100 < data_checkin_coordinates_sorted(i,2) && (1800*100/4013 > data_checkin_coordinates_sorted(i,3)))
+        counterKiddie = counterKiddie + 1;
+        c2_kiddie(i,2) = counterKiddie;
+    end
+    
+    if((1800/4013) * 100 > data_checkin_coordinates_sorted(i,3) && (2000*100/4044 < data_checkin_coordinates_sorted(i,2) && 2900*100/4044 > data_checkin_coordinates_sorted(i,2)))
+        counterEntry = counterEntry + 1;
+        c2_entry(i,2) = counterEntry; 
+        
+    end
+    
+        counterCheckIn = counterCheckIn - 1; 
+    end
+
+end
+
+
+
+
+
+
+
+
+
+
 
