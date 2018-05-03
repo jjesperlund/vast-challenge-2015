@@ -27,8 +27,19 @@ toc
 %}
 
 %% Load data
+clear
+clc
+dataname = 'parsed_data_sunday';
+load(dataname)
 
-load('parsed_data_friday')
+if dataname == 'parsed_data_sunday' 
+    parsed_data.timestamp = parsed_data.timestamp(1:end-1);
+    parsed_data.type = parsed_data.type(1:end-1);
+    parsed_data.id = parsed_data.id(1:end-1);
+    parsed_data.xCoordinates = parsed_data.xCoordinates(1:end-1);
+    parsed_data.yCoordinates = parsed_data.yCoordinates(1:end-1);
+end
+
 
 %% Scatter plot of x/y coordinates
 sz = 2;
@@ -104,7 +115,7 @@ end
 %% Plot number of checkins per ID
 
 figure;
-bar(numberOfCheckin_perID(:,1), numberOfCheckin_perID(:,2), 'BarWidth', 75);
+%%bar(numberOfCheckin_perID(:,1), numberOfCheckin_perID(:,2), 'BarWidth', 75);
 max_checkins = max(numberOfCheckin_perID(:,2));
 xlim([min(numberOfCheckin_perID(:,1)) max(numberOfCheckin_perID(:,1))]);
 ylim([0 max_checkins]);
@@ -113,7 +124,7 @@ ylim([0 max_checkins]);
 %% Dividing into 2 groups. Higher than 50 and lower than 10 check-ins.
 counterhigh = 1;
 counterlow = 1;
-for i=1:index
+for i=1:length(numberOfCheckin_perID)
     
     if(numberOfCheckin_perID(i,2) > 50)
         IDHighCheckin(counterhigh,1) = numberOfCheckin_perID(i,1);
