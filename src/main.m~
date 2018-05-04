@@ -29,7 +29,7 @@ toc
 %% Load data
 clear
 clc
-dataname = 'parsed_data_sunday';
+dataname = 'parsed_data_saturday';
 load(dataname)
 
 %{
@@ -263,6 +263,9 @@ figure;
 hist(datenum(IDs_and_timestamps_(:,1)), 24);
 datetick
 title('Arrivals')
+
+h = findobj(gca, 'Type', 'patch');
+h.FaceColor = [102/255 170/255 215/255];
  
 % Departures
 figure;
@@ -271,12 +274,14 @@ datetick
 title('Departures')
 
 h = findobj(gca, 'Type', 'patch');
+h.FaceColor = [102/255 170/255 215/255];
 
 % Duration
 figure;
 histogram(IDs_and_duration(:,2), 100)
 xlabel('time spent at the park (minutes)')
 title('Visit duration for each person')
+
 
 
 
