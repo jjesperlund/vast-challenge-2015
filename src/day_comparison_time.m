@@ -128,5 +128,24 @@ end
 
 
 
+%% Scotty Jones Lovers
+
+counter = 1;
+for i=1:length(unique_IDs_fri)
+    id = unique_IDs_fri(i,1);
+    for x=1:length(parsed_data_friday)
+        if(id == parsed_data_friday.id(x) && parsed_data_friday.type(x) == 'check-in')
+            if( parsed_data_friday.xCoordinates(x) > (1172/4044)*100 && parsed_data_friday.xCoordinates(x) < (1470/4044)*100 && parsed_data_friday.yCoordinates(x) > (2670/4013)*100 && parsed_data_friday.yCoordinates(x) < (3250/4013)*100 )
+            
+            IDs_checkins_timestamps(counter,1) = id;
+            IDs_checkins_timestamps(counter,2) = parsed_data_friday.timestamp(x);
+            counter = counter + 1;
+            end
+        end
+    end
+end
+
+%%IDs_movements_timestamps_32_sorted = sortrows(IDs_movements_timestamps);
+
 
 
