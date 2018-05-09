@@ -118,7 +118,7 @@ temp(4243:4242+2417) = saturday_not_sunday_IDs;
 only_saturday = unique(temp);
 
 %% What IDs only visisted the park only on sunday?
-% Answer: 5756 st
+% Answer:  st
 
 sun_fri = ismember(unique_IDs_sun, unique_IDs_fri);
 
@@ -130,18 +130,18 @@ for i = 1:length(sun_fri)
     end
 end
 
-sun_sat = ismember(unique_IDs_sun, unique_IDs_sat);
+sat_sun = ismember(unique_IDs_sat, unique_IDs_sun);
 c = 1;
-for i = 1:length(sun_sat)
-    if sun_sat(i) == 0
-        sunday_not_saturday_IDs(c) = unique_IDs_sun(i);
+for i = 1:length(sat_sun)
+    if sat_sun(i) == 0
+        saturday_not_sunday_IDs(c) = unique_IDs_sat(i);
         c = c + 1;
     end
 end
 
-temp(1:5756) = sunday_not_friday_IDs;
-temp(5757:5756+3575) = sunday_not_saturday_IDs;
-only_sunday = unique(temp);
+temp(1:4242) = saturday_not_friday_IDs;
+temp(4243:4242+2417) = saturday_not_sunday_IDs;
+only_saturday = unique(temp);
 
 %% When do those people (referred to as maniacs) visit the park? 
 
