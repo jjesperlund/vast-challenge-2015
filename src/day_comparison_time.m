@@ -204,23 +204,43 @@ end
 
 
 
+
 %% Scotty Jones Lovers
 
 counter = 1;
-for i=1:length(unique_IDs_fri)
-    id = unique_IDs_fri(i,1);
-    for x=1:length(parsed_data_friday)
-        if(id == parsed_data_friday.id(x) && parsed_data_friday.type(x) == 'check-in')
+
+   
+    for x=1:length(parsed_data_friday.id)
+        id = parsed_data_friday.id(x);
+        type = parsed_data_friday.type(x);
+        if(type == 'check-in')
             if( parsed_data_friday.xCoordinates(x) > (1172/4044)*100 && parsed_data_friday.xCoordinates(x) < (1470/4044)*100 && parsed_data_friday.yCoordinates(x) > (2670/4013)*100 && parsed_data_friday.yCoordinates(x) < (3250/4013)*100 )
             
-            IDs_checkins_timestamps(counter,1) = id;
-            IDs_checkins_timestamps(counter,2) = parsed_data_friday.timestamp(x);
+            IDs_checkins_id(counter,1) = id;
             counter = counter + 1;
             end
         end
     end
-end
 
-%%IDs_movements_timestamps_32_sorted = sortrows(IDs_movements_timestamps);
+IDs_checkins_sorted = sortrows(IDs_checkins_id);
+
+%% How many check-in per "fan" ?
+
+counter = 1;
+index = 1;
+for i=1:(length(IDs_checkins_sorted) -1)
+    
+    if(IDs_checkins_sorted(i,1) == IDs_checkins_sorted(i+1,1))
+        counter = counter + 1;   
+    else
+        numberOfCheckin_perfanID(index, 1) = IDs_checkins_sorted(i,1);
+        numberOfCheckin_perfanID(index, 2) = counter;
+        index = index + 1;
+        counter = 1;
+   end
+    
+end   
+
+numberOfCheckin_perfanID(:,2) = sortrows(numberOfCheckin_perfanID(:,2));
 
 
