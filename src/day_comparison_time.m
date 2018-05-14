@@ -143,6 +143,94 @@ temp(1:5756) = sunday_not_friday_IDs;
 temp(5757:5756+3575) = sunday_not_saturday_IDs;
 only_sunday = unique(temp);
 
+%% Plot map histogram of the one day visitors
+
+[sorted_IDs_fri, id_index_fri] = sort(parsed_data_friday.id);
+[sorted_IDs_sat, id_index_sat] = sort(parsed_data_saturday.id);
+[sorted_IDs_sun, id_index_sun] = sort(parsed_data_sunday.id);
+
+%% Friday
+c = 1;
+for i = 1:length(sorted_IDs_fri)
+    if(sorted_IDs_fri(i) == only_friday(c))
+        if(parsed_data_friday.type(i) == 'check-in')
+            coord_fri(c,1) = parsed_data_friday.xCoordinates(i);
+            coord_fri(c,2) = parsed_data_friday.yCoordinates(i);
+            c = c + 1;
+        end
+    end
+end
+
+
+maxX = max(coord_fri(:,1));
+maxY = max(coord_fri(:,2));
+
+histogram2(coord_fri(:,1), coord_fri(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
+colormap hot
+colorbar
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+title('Frequency of X/Y coordinates in park map; Only friday visitors')
+
+%% Saturday
+c = 1;
+for i = 1:length(sorted_IDs_sat)
+    if(sorted_IDs_sat(i) == only_saturday(c))
+        if(parsed_data_saturday.type(i) == 'check-in')
+            coord_sat(c,1) = parsed_data_saturday.xCoordinates(i);
+            coord_sat(c,2) = parsed_data_saturday.yCoordinates(i);
+            c = c + 1;
+        end
+    end
+end
+
+
+maxX = max(coord_sat(:,1));
+maxY = max(coord_sat(:,2));
+
+histogram2(coord_sat(:,1), coord_sat(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
+colormap hot
+colorbar
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+title('Frequency of X/Y coordinates in park map; Only saturday visitors')
+
+%% Sunday
+c = 1;
+for i = 1:length(sorted_IDs_sun)
+    if(sorted_IDs_sun(i) == only_sunday(c))
+        if(parsed_data_sunday.type(i) == 'check-in')
+            coord_sun(c,1) = parsed_data_sunday.xCoordinates(i);
+            coord_sun(c,2) = parsed_data_sunday.yCoordinates(i);
+            c = c + 1;
+        end
+    end
+end
+
+
+maxX = max(coord_sun(:,1));
+maxY = max(coord_sun(:,2));
+
+histogram2(coord_sun(:,1), coord_sun(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
+colormap hot
+colorbar
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+title('Frequency of X/Y coordinates in park map; Only sunday visitors')
+
+
 %% When do those people (referred to as maniacs) visit the park? 
 
 %maniacs_fri_timestamp = ID_timestamp_fri(find(unique_IDs_fri == friday_saturday_sunday_IDs),:);
@@ -202,14 +290,10 @@ for i = 1:length(numberOf850_perID)
     end
 end
 
-
-
-
 %% Scotty Jones Lovers
 
 counter = 1;
 
-   
     for x=1:length(parsed_data_friday.id)
         id = parsed_data_friday.id(x);
         type = parsed_data_friday.type(x);
@@ -242,5 +326,3 @@ for i=1:(length(IDs_checkins_sorted) -1)
 end   
 
 numberOfCheckin_perfanID(:,2) = sortrows(numberOfCheckin_perfanID(:,2));
-
-

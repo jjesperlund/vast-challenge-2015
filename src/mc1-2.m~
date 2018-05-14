@@ -54,41 +54,46 @@ unique_IDs_fri = importdata('unique_IDs_f.mat');
 unique_IDs_sat = importdata('unique_ID_sat.mat');
 unique_IDs_sun = importdata('unique_ID_sun.mat');
 
-%% Arrivals on fri, sat, sun
+%%
 
-[N1, edges1] = histcounts(ID_timestamp_fri(:,1).Hour);  
-[N2, edges2] = histcounts(ID_timestamp_sat(:,1).Hour); 
-[N3, edges3] = histcounts(ID_timestamp_sun(:,1).Hour); 
-
-figure
-plot(edges1(2:end), N1, edges2(2:end), N2, edges3(2:end), N3, 'LineWidth', 3)
-set(gca, 'FontSize', 16)
-legend('Friday', 'Saturday', 'Sunday');
-title('Arrivals', 'FontSize', 20)
-xlabel('Hour', 'FontSize', 18)
-ylabel('Quantity', 'FontSize', 18)
-
-[N1, edges1] = histcounts(ID_timestamp_fri(:,2).Hour);  
-[N2, edges2] = histcounts(ID_timestamp_sat(:,2).Hour); 
-[N3, edges3] = histcounts(ID_timestamp_sun(:,2).Hour); 
+[N1, edges1] = histcounts(ID_timestamp_fri(:,1));  
+[N2, edges2] = histcounts(movements_sat.Hour);  
+[N3, edges3] = histcounts(movements_sun.Hour);
 
 figure
 plot(edges1(2:end), N1, edges2(2:end), N2, edges3(2:end), N3, 'LineWidth', 3)
-set(gca, 'FontSize', 16)
 legend('Friday', 'Saturday', 'Sunday');
-title('Departures', 'FontSize', 20)
-xlabel('Hour', 'FontSize', 18)
-ylabel('Quantity', 'FontSize', 18)
+title('Movement events', 'FontSize', 16)
+xlabel('Hour', 'FontSize', 15)
+ylabel('Quantity', 'FontSize', 15)
 
-[N1, edges1] = histcounts(ID_duration_fri(:,2));  
-[N2, edges2] = histcounts(ID_duration_sat(:,2)); 
-[N3, edges3] = histcounts(ID_duration_sun(:,2)); 
+%% Plot the arrivals, departures and durations
+ 
+%Arrivals
+figure;
+%histogram(hour(IDs_and_timestamps_(:,1)))
+hist(datenum(ID_timestamp_fri(:,1)), 24);
+datetick
+title('Arrivals')
 
-figure
-plot(edges1(2:end), N1, edges2(2:end), N2, edges3(2:end), N3, 'LineWidth', 3)
-set(gca, 'FontSize', 16)
-legend('Friday', 'Saturday', 'Sunday');
-title('Visit Duration', 'FontSize', 20)
-xlabel('Minutes', 'FontSize', 18)
-ylabel('Quantity', 'FontSize', 18)
+h = findobj(gca, 'Type', 'patch');
+h.FaceColor = [102/255 170/255 215/255];
+ 
+% Departures
+figure;
+hist(datenum(ID_timestamp_fri(:,2)), 24);
+datetick
+title('Departures')
+
+h = findobj(gca, 'Type', 'patch');
+h.FaceColor = [102/255 170/255 215/255];
+
+% Duration
+figure;
+histogram(ID_duration_fri(:,2), 100)
+xlabel('time spent at the park (minutes)')
+title('Visit duration for each person')
+
+
+
 

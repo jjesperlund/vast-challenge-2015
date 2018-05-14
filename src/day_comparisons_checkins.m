@@ -31,7 +31,7 @@ coordinates_sun(:,2) = parsed_data_sunday.yCoordinates(indexes_sun);
 
 
 % Animation of the person's movement
-comet(coordinates_sat(:,1), coordinates_sat(:,2), 0.8)
+comet(coordinates_f(:,1), coordinates_f(:,2), 0.8)
 xlim([0 99])
 ylim([0 99])
 

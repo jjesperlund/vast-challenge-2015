@@ -143,6 +143,65 @@ temp(1:5756) = sunday_not_friday_IDs;
 temp(5757:5756+3575) = sunday_not_saturday_IDs;
 only_sunday = unique(temp);
 
+%% Plot histogram of the one day visitors
+
+[sorted_IDs_fri, id_index_fri] = sort(parsed_data_friday.id);
+[sorted_IDs_sat, id_index_sat] = sort(parsed_data_saturday.id);
+[sorted_IDs_sun, id_index_sun] = sort(parsed_data_sunday.id);
+
+%% Friday
+c = 1;
+for i = 1:length(sorted_IDs_fri)
+    if(sorted_IDs_fri(i) == only_friday(c))
+        if(parsed_data_friday.type(i) == 'check-in')
+            coord_fri(c,1) = parsed_data_friday.xCoordinates(i);
+            coord_fri(c,2) = parsed_data_friday.yCoordinates(i);
+            c = c + 1;
+        end
+    end
+end
+
+
+maxX = max(coord_fri(:,1));
+maxY = max(coord_fri(:,2));
+
+histogram2(coord_fri(:,1), coord_fri(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+colormap hot
+colorbar
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+title('Frequency of X/Y coordinates in park map; Only friday visitors')
+
+%% Saturday
+c = 1;
+for i = 1:length(sorted_IDs_sat)
+    if(sorted_IDs_sat(i) == only_saturday(c))
+        if(parsed_data_saturday.type(i) == 'check-in')
+            coord_sat(c,1) = parsed_data_saturday.xCoordinates(i);
+            coord_sat(c,2) = parsed_data_saturday.yCoordinates(i);
+            c = c + 1;
+        end
+    end
+end
+
+
+maxX = max(coord_sat(:,1));
+maxY = max(coord_sat(:,2));
+
+histogram2(coord_sat(:,1), coord_fri(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+colormap hot
+colorbar
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+title('Frequency of X/Y coordinates in park map; Only friday visitors')
+
+
 %% When do those people (referred to as maniacs) visit the park? 
 
 %maniacs_fri_timestamp = ID_timestamp_fri(find(unique_IDs_fri == friday_saturday_sunday_IDs),:);
@@ -202,26 +261,39 @@ for i = 1:length(numberOf850_perID)
     end
 end
 
-
-
 %% Scotty Jones Lovers
 
 counter = 1;
-for i=1:length(unique_IDs_fri)
-    id = unique_IDs_fri(i,1);
-    for x=1:length(parsed_data_friday)
-        if(id == parsed_data_friday.id(x) && parsed_data_friday.type(x) == 'check-in')
+
+    for x=1:length(parsed_data_friday.id)
+        id = parsed_data_friday.id(x);
+        type = parsed_data_friday.type(x);
+        if(type == 'check-in')
             if( parsed_data_friday.xCoordinates(x) > (1172/4044)*100 && parsed_data_friday.xCoordinates(x) < (1470/4044)*100 && parsed_data_friday.yCoordinates(x) > (2670/4013)*100 && parsed_data_friday.yCoordinates(x) < (3250/4013)*100 )
             
-            IDs_checkins_timestamps(counter,1) = id;
-            IDs_checkins_timestamps(counter,2) = parsed_data_friday.timestamp(x);
+            IDs_checkins_id(counter,1) = id;
             counter = counter + 1;
             end
         end
     end
-end
 
-%%IDs_movements_timestamps_32_sorted = sortrows(IDs_movements_timestamps);
+IDs_checkins_sorted = sortrows(IDs_checkins_id);
 
-%% MC1.2: Are there notable differences in the patterns of activity on in the park across the three days? Please describe the notable difference you see.
+%% How many check-in per "fan" ?
 
+counter = 1;
+index = 1;
+for i=1:(length(IDs_checkins_sorted) -1)
+    
+    if(IDs_checkins_sorted(i,1) == IDs_checkins_sorted(i+1,1))
+        counter = counter + 1;   
+    else
+        numberOfCheckin_perfanID(index, 1) = IDs_checkins_sorted(i,1);
+        numberOfCheckin_perfanID(index, 2) = counter;
+        index = index + 1;
+        counter = 1;
+   end
+    
+end   
+
+numberOfCheckin_perfanID(:,2) = sortrows(numberOfCheckin_perfanID(:,2));
