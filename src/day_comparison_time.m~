@@ -143,7 +143,7 @@ temp(1:5756) = sunday_not_friday_IDs;
 temp(5757:5756+3575) = sunday_not_saturday_IDs;
 only_sunday = unique(temp);
 
-%% Plot histogram of the one day visitors
+%% Plot map histogram of the one day visitors
 
 [sorted_IDs_fri, id_index_fri] = sort(parsed_data_friday.id);
 [sorted_IDs_sat, id_index_sat] = sort(parsed_data_saturday.id);
@@ -167,6 +167,7 @@ maxY = max(coord_fri(:,2));
 
 histogram2(coord_fri(:,1), coord_fri(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
     'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
 colormap hot
 colorbar
 grid off
@@ -191,15 +192,43 @@ end
 maxX = max(coord_sat(:,1));
 maxY = max(coord_sat(:,2));
 
-histogram2(coord_sat(:,1), coord_fri(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
+histogram2(coord_sat(:,1), coord_sat(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
     'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
 colormap hot
 colorbar
 grid off
 axis equal
 xlabel('x-coordinate')
 ylabel('y-coordinate')
-title('Frequency of X/Y coordinates in park map; Only friday visitors')
+title('Frequency of X/Y coordinates in park map; Only saturday visitors')
+
+%% Sunday
+c = 1;
+for i = 1:length(sorted_IDs_sun)
+    if(sorted_IDs_sun(i) == only_sunday(c))
+        if(parsed_data_sunday.type(i) == 'check-in')
+            coord_sun(c,1) = parsed_data_sunday.xCoordinates(i);
+            coord_sun(c,2) = parsed_data_sunday.yCoordinates(i);
+            c = c + 1;
+        end
+    end
+end
+
+
+maxX = max(coord_sun(:,1));
+maxY = max(coord_sun(:,2));
+
+histogram2(coord_sun(:,1), coord_sun(:,2), 20,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
+colormap hot
+colorbar
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+title('Frequency of X/Y coordinates in park map; Only sunday visitors')
 
 
 %% When do those people (referred to as maniacs) visit the park? 
@@ -297,3 +326,150 @@ for i=1:(length(IDs_checkins_sorted) -1)
 end   
 
 numberOfCheckin_perfanID(:,2) = sortrows(numberOfCheckin_perfanID(:,2));
+
+
+%% Create the group "Late Birds" - ppl arriving at the park later than 17:00
+
+% Friday
+c = 1;
+for i = 1:length(ID_timestamp_fri)
+    if(ID_timestamp_fri(i,1).Hour >= 17)
+        late_birds_fri(c) = unique_IDs_fri(i);
+        late_birds_fri_timestamps(c, 1) = ID_timestamp_fri(i,1);
+        late_birds_fri_timestamps(c, 2) = ID_timestamp_fri(i,2);
+        %disp(ID_timestamp_fri(i,2).Hour)
+        c = c + 1;
+    end
+end
+% Saturday
+c = 1;
+for i = 1:length(ID_timestamp_sat)
+    if(ID_timestamp_sat(i,1).Hour >= 17)
+        late_birds_sat(c) = unique_IDs_sat(i);
+        late_birds_sat_timestamps(c, 1) = ID_timestamp_sat(i,1);
+        late_birds_sat_timestamps(c, 2) = ID_timestamp_sat(i,2);
+        %disp(ID_timestamp_sat(i,2).Hour)
+        c = c + 1;
+    end
+end
+% Sunday
+c = 1;
+for i = 1:length(ID_timestamp_sun)
+    if(ID_timestamp_sun(i,1).Hour >= 17)
+        late_birds_sun(c) = unique_IDs_sun(i);
+        late_birds_sun_timestamps(c, 1) = ID_timestamp_sun(i,1);
+        late_birds_sun_timestamps(c, 2) = ID_timestamp_sun(i,2);
+        %disp(ID_timestamp_sun(i,2).Minute)
+        c = c + 1;
+    end
+end
+
+%% How many checkins did they do?
+% Run for-loops separately to avoid error
+for i = 1:length(late_birds_fri)
+    late_birds_fri_checkins(i,1) = late_birds_fri(i);
+    late_birds_fri_checkins(i,2) = checkins_fri( find(checkins_fri(:,1) == late_birds_fri(i)), 2);
+end
+for i = 1:length(late_birds_sat)
+    late_birds_sat_checkins(i,1) = late_birds_sat(i);
+    late_birds_sat_checkins(i,2) = checkins_sat( find(checkins_sat(:,1) == late_birds_sat(i)), 2);
+end
+for i = 1:length(late_birds_sun)
+    late_birds_sun_checkins(i,1) = late_birds_sun(i);
+    late_birds_sun_checkins(i,2) = checkins_sun( find(checkins_sun(:,1) == late_birds_sun(i)), 2);
+end
+
+%% Plot "Late birds" arrivals and departures
+
+[N1, edges1] = hist(late_birds_fri_timestamps(:,1).Hour);  
+[N2, edges2] = hist(late_birds_sat_timestamps(:,1).Hour); 
+[N3, edges3] = hist(late_birds_sun_timestamps(:,1).Hour); 
+
+figure
+plot(edges1, N1, edges2, N2, edges3, N3, 'LineWidth', 3)
+set(gca, 'FontSize', 16)
+legend('Friday', 'Saturday', 'Sunday');
+title('Late birds: Arrivals', 'FontSize', 20)
+xlabel('Hour', 'FontSize', 18)
+ylabel('Quantity', 'FontSize', 18)
+
+[N1, edges1] = hist(late_birds_fri_timestamps(:,2).Hour);  
+[N2, edges2] = hist(late_birds_sat_timestamps(:,2).Hour); 
+[N3, edges3] = hist(late_birds_sun_timestamps(:,2).Hour);  
+
+figure
+plot(edges1, N1, edges2, N2, edges3, N3, 'LineWidth', 3)
+set(gca, 'FontSize', 16)
+legend('Friday', 'Saturday', 'Sunday');
+title('Late birds: Departures', 'FontSize', 20)
+xlabel('Hour', 'FontSize', 18)
+ylabel('Quantity', 'FontSize', 18)
+
+%% Create the group "Early birds" - persons who visisted the park in the morning and left before 12:00
+
+% Friday
+c = 1;
+for i = 1:length(ID_timestamp_fri)
+    if(ID_timestamp_fri(i,2).Hour <= 12)
+        early_birds_fri(c) = unique_IDs_fri(i);
+        early_birds_fri_timestamps(c, 1) = ID_timestamp_sun(i,1);
+        early_birds_fri_timestamps(c, 2) = ID_timestamp_sun(i,2);
+        %disp(ID_timestamp_fri(i,1).Hour)
+        c = c + 1;
+    end
+end
+% Saturday
+c = 1;
+for i = 1:length(ID_timestamp_sat)
+    if(ID_timestamp_sat(i,2).Hour <= 12)
+        early_birds_sat(c) = unique_IDs_sat(i);
+        early_birds_sat_timestamps(c, 1) = ID_timestamp_sun(i,1);
+        early_birds_sat_timestamps(c, 2) = ID_timestamp_sun(i,2);
+        %disp(ID_timestamp_sat(i,1).Hour)
+        c = c + 1;
+    end
+end
+% Sunday
+c = 1;
+for i = 1:length(ID_timestamp_sun)
+    if(ID_timestamp_sun(i,2).Hour <= 12)
+        early_birds_sun(c) = unique_IDs_sun(i);
+        early_birds_sun_timestamps(c, 1) = ID_timestamp_sun(i,1);
+        early_birds_sun_timestamps(c, 2) = ID_timestamp_sun(i,2);
+        %disp(ID_timestamp_sun(i,1).Hour)
+        c = c + 1;
+    end
+end
+
+%% How many checkins did they do?
+% Run for-loops separately to avoid error
+for i = 1:length(early_birds_fri)
+    early_birds_fri_checkins(i,1) = early_birds_fri(i);
+    early_birds_fri_checkins(i,2) = checkins_fri( find(checkins_fri(:,1) == early_birds_fri(i)), 2);
+end
+for i = 1:length(early_birds_sat)
+    early_birds_sat_checkins(i,1) = early_birds_sat(i);
+    early_birds_sat_checkins(i,2) = checkins_sat( find(checkins_sat(:,1) == early_birds_sat(i)), 2);
+end
+for i = 1:length(early_birds_sun)
+    early_birds_sun_checkins(i,1) = early_birds_sun(i);
+    early_birds_sun_checkins(i,2) = checkins_sun( find(checkins_sun(:,1) == early_birds_sun(i)), 2);
+end
+
+
+%% Calculate early birds' (disappointeds') visit duration and plot
+
+
+[N1, edges1] = hist( minutes(early_birds_fri_timestamps(:,2) - early_birds_fri_timestamps(:,1)) );  
+[N2, edges2] = hist( minutes(early_birds_sat_timestamps(:,2) - early_birds_sat_timestamps(:,1))  ); 
+[N3, edges3] = hist( minutes(early_birds_sun_timestamps(:,2) - early_birds_sun_timestamps(:,1))  ); 
+
+i_f = find();
+
+figure
+plot(edges1, N1, edges2, N2, edges3, N3, 'LineWidth', 3)
+set(gca, 'FontSize', 16)
+legend('Friday', 'Saturday', 'Sunday');
+title('Disappointed: Visit Duration', 'FontSize', 20)
+xlabel('Minutes', 'FontSize', 18)
+ylabel('Quantity', 'FontSize', 18)
