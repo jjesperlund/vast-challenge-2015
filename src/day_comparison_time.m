@@ -242,28 +242,28 @@ title('Frequency of X/Y coordinates in park map; Only sunday visitors')
 
 c = 1;
 for i = 1:length(ID_duration_fri)
-    if ID_duration_fri(i,2) > 850
+    if ID_duration_fri(i,2) > 720
         IDs_over_850_minutes(c,1) = ID_duration_fri(i,1);
         IDs_over_850_minutes(c,2) = ID_duration_fri(i,2);
         c = c + 1;
     end
 end
 for i = 1:length(ID_duration_sat)
-    if ID_duration_sat(i,2) > 850
+    if ID_duration_sat(i,2) > 720
         IDs_over_850_minutes(c,1) = ID_duration_sat(i,1);
         IDs_over_850_minutes(c,2) = ID_duration_sat(i,2);
         c = c + 1;
     end
 end
 for i = 1:length(ID_duration_sun)
-    if ID_duration_sun(i,2) > 850
+    if ID_duration_sun(i,2) > 720
         IDs_over_850_minutes(c,1) = ID_duration_sun(i,1);
         IDs_over_850_minutes(c,2) = ID_duration_sun(i,2);
         c = c + 1;
     end
 end
 
-%% How many days does the IDs have over 850 minutes attended?
+%% How many days does the IDs have over 720 minutes attended?
 counter = 1;
 IDs_over_850_minutes_sorted = sortrows(IDs_over_850_minutes); 
 
@@ -312,6 +312,57 @@ counter = 1;
 IDs_checkins_sorted = sortrows(IDs_checkins_id);
 
 %% How many check-in per "fan" ?
+numberOfCheckinsPerID = load("data/Friday/checkins/number_of_checkins_per_ID_f")
+counter = 1;
+index = 1;
+for i=1:(length(IDs_checkins_sorted) -1)
+    
+    if(IDs_checkins_sorted(i,1) == IDs_checkins_sorted(i+1,1))
+        counter = counter + 1;   
+    else
+        numberOfCheckin_perfanID(index, 1) = IDs_checkins_sorted(i,1);
+        numberOfCheckin_perfanID(index, 2) = counter;
+        index = index + 1;
+        counter = 1;
+   end
+    
+end   
+
+numberOfCheckin_perfanID(:,2) = sortrows(numberOfCheckin_perfanID(:,2));
+for i=1:length(numberOfCheckin_perfanID)
+    id = numberOfCheckin_perfanID(i,1);
+    for k=1:length(numberOfCheckinsPerID.numberOfCheckin_perID())
+        if(id == numberOfCheckinsPerID.numberOfCheckin_perID(k,1))
+            procentage_perfanID(i,1) = id;
+            procentage_perfanID(i,2) = (numberOfCheckin_perfanID(i,2)/numberOfCheckinsPerID.numberOfCheckin_perID(k,2))*100;
+            break;
+        end
+    end
+    
+end
+
+ScottyJones_Fans  = procentage_perfanID(procentage_perfanID(:,2) > 90,1);
+
+
+
+%% Show lovers
+
+counter = 1;
+
+    for x=1:length(parsed_data_friday.id)
+        id = parsed_data_friday.id(x);
+        type = parsed_data_friday.type(x);
+        if(type == 'check-in')
+            if( parsed_data_friday.xCoordinates(x) > (2900/4044)*100 && parsed_data_friday.xCoordinates(x) < (3700/4044)*100 && parsed_data_friday.yCoordinates(x) > (2850/4013)*100 && parsed_data_friday.yCoordinates(x) < (3800/4013)*100 )
+            
+            IDs_checkins_id(counter,1) = id;
+            counter = counter + 1;
+            end
+        end
+    end
+
+IDs_checkins_sorted = sortrows(IDs_checkins_id);
+
 
 counter = 1;
 index = 1;
@@ -329,6 +380,27 @@ for i=1:(length(IDs_checkins_sorted) -1)
 end   
 
 numberOfCheckin_perfanID(:,2) = sortrows(numberOfCheckin_perfanID(:,2));
+
+
+for i=1:length(numberOfCheckin_perfanID)
+    id = numberOfCheckin_perfanID(i,1);
+    for k=1:length(numberOfCheckinsPerID.numberOfCheckin_perID())
+        if(id == numberOfCheckinsPerID.numberOfCheckin_perID(k,1))
+            procentage_pershowfanID(i,1) = id;
+            procentage_pershowfanID(i,2) = (numberOfCheckin_perfanID(i,2)/numberOfCheckinsPerID.numberOfCheckin_perID(k,2))*100;
+            break;
+        end
+    end
+    
+end
+
+
+Show_fans  = procentage_pershowfanID(procentage_pershowfanID(:,2) > 90,1);
+
+
+
+
+
 
 
 %% Create the group "Late Birds" - ppl arriving at the park later than 17:00
