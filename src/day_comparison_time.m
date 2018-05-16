@@ -295,11 +295,104 @@ end
 
 %% What do the "park lovers" do in the park?
 
-% Friday
-for i = 1:length(park_lovers)
-    index = find(unique_IDs_fri == park_lovers(i));
+%% Friday Checkins
+clear park_lovers_coordinates
+clear i_fri
+clear c_fri
+
+i_fri = find(IDs_and_coordinates_fri(:,1) == park_lovers(1,1));
+c_fri = IDs_and_coordinates_fri(i_fri, 2:3);
+park_lovers_coordinates(1:length(c_fri),:) = c_fri;
+
+for i = 2:length(park_lovers)
+    i_fri = find(IDs_and_coordinates_fri(:,1) == park_lovers(i,1));
+    c_fri = IDs_and_coordinates_fri(i_fri, 2:3);
     
+    %park_lovers_coordinates = [park_lovers_coordinates ; c_fri];
+    park_lovers_coordinates(end+1:end+length(c_fri), :) = c_fri;
 end
+
+maxX = max(park_lovers_coordinates(:,1));
+maxY = max(park_lovers_coordinates(:,2));
+
+histogram2(park_lovers_coordinates(:,1), park_lovers_coordinates(:,2), 30,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
+colormap parula
+h = colorbar;
+ylabel(h, 'Number of Checkins')
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+zlabel('checkins')
+title('Park Lovers on Friday')
+
+%% Saturday Checkins
+clear park_lovers_coordinates
+clear i_sat
+clear c_sat
+
+i_sat = find(IDs_and_coordinates_sat(:,1) == park_lovers(1,1));
+c_sat = IDs_and_coordinates_sat(i_sat, 2:3);
+park_lovers_coordinates(1:length(c_sat),:) = c_sat;
+
+for i = 2:length(park_lovers)
+    i_sat = find(IDs_and_coordinates_sat(:,1) == park_lovers(i,1));
+    c_sat = IDs_and_coordinates_sat(i_sat, 2:3);
+    
+    %park_lovers_coordinates = [park_lovers_coordinates ; c_fri];
+    park_lovers_coordinates(end+1:end+length(c_sat), :) = c_sat;
+end
+
+maxX = max(park_lovers_coordinates(:,1));
+maxY = max(park_lovers_coordinates(:,2));
+
+histogram2(park_lovers_coordinates(:,1), park_lovers_coordinates(:,2), 30,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
+colormap parula
+h = colorbar;
+ylabel(h, 'Number of Checkins')
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+zlabel('checkins')
+title('Park Lovers on Saturday')
+
+%% Sunday Checkins
+clear park_lovers_coordinates
+clear i_sun
+clear c_sun
+
+i_sun = find(IDs_and_coordinates_sun(:,1) == park_lovers(1,1));
+c_sun = IDs_and_coordinates_sun(i_sun, 2:3);
+park_lovers_coordinates(1:length(c_sun),:) = c_sun;
+
+for i = 2:length(park_lovers)
+    i_sun = find(IDs_and_coordinates_sun(:,1) == park_lovers(i,1));
+    c_sun = IDs_and_coordinates_sun(i_sun, 2:3);
+    
+    %park_lovers_coordinates = [park_lovers_coordinates ; c_fri];
+    park_lovers_coordinates(end+1:end+length(c_sun), :) = c_sun;
+end
+
+maxX = max(park_lovers_coordinates(:,1));
+maxY = max(park_lovers_coordinates(:,2));
+
+histogram2(park_lovers_coordinates(:,1), park_lovers_coordinates(:,2), 30,'DisplayStyle','tile','ShowEmptyBins','on', ...
+    'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
+set(gca, 'FontSize', 15)
+colormap parula
+h = colorbar;
+ylabel(h, 'Number of Checkins')
+grid off
+axis equal
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+zlabel('checkins')
+title('Park Lovers on Sunday')
 
 %% Scotty Jones Lovers
 
