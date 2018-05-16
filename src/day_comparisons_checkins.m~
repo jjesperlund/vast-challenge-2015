@@ -122,7 +122,6 @@ end
 families_with_small_children = ratio_kiddie( find(ratio_kiddie(:,2) == 100), : );
 
 
-
 %% Plot families with small children group
 
 IDs_and_coordinates_fri = importdata('Friday/checkins/IDs_and_checkin_coordinates_sorted_by_ID_f.mat');
@@ -135,20 +134,28 @@ i_fri = find(IDs_and_coordinates_fri(:,1) == families_with_small_children(1));
 c_fri = IDs_and_coordinates_fri(i_sat, 2:3);
 coord_fri(1:length(c_fri), :) = c_fri;
 
-counter_f = 0;
+i_sat = find(IDs_and_coordinates_sat(:,1) == families_with_small_children(1));
+c_sat = IDs_and_coordinates_sat(i_sat, 2:3);
+coord_sat(1:length(c_sat), :) = c_sat;
 
+i_sun = find(IDs_and_coordinates_sun(:,1) == families_with_small_children(1));
+c_sun = IDs_and_coordinates_sun(i_sun, 2:3);
+coord_sun(1:length(c_sun), :) = c_sun;
 
+counter_ = 0;
 for i = 2:length(families_with_small_children)
     
     i_fri = find(IDs_and_coordinates_fri(:,1) == families_with_small_children(i));
     c_fri = IDs_and_coordinates_fri(i_fri, 2:3);
-
+    i_sat = find(IDs_and_coordinates_sat(:,1) == families_with_small_children(i));
+    c_sat = IDs_and_coordinates_sat(i_sat, 2:3);
+    i_sun = find(IDs_and_coordinates_sun(:,1) == families_with_small_children(i));
+    c_sun = IDs_and_coordinates_sun(i_sun, 2:3);
+    
     if(~isempty(c_fri))
-        counter_f = counter_f + 1;
-        %coord_fri(end+1:length(c_fri), :) = c_fri;
-        coord_fri = [coord_fri; c_fri];
+        counter = counter + 1;
+        coord_sat(end+1:length(c_fri), :) = c_fri;
     end
-
 end
 
 
@@ -166,4 +173,6 @@ xlabel('x-coordinate')
 ylabel('y-coordinate')
 zlabel('checkins')
 title('Frequency of X/Y coordinates in park map; Only sunday visitors')
+
+
 
