@@ -73,7 +73,7 @@ for i=1:length(park_lovers)
     
 end
 
-maniacs = park_lovers_checkins(park_lovers_checkins(:,2) > 50);
+maniacs = park_lovers_checkins(park_lovers_checkins(:,2) > 90);
 
 
 %% Kiddie Land lovers MALL

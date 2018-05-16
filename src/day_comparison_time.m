@@ -293,6 +293,14 @@ for i = 1:length(numberOf850_perID)
     end
 end
 
+%% What do the "park lovers" do in the park?
+
+% Friday
+for i = 1:length(park_lovers)
+    index = find(unique_IDs_fri == park_lovers(i));
+    
+end
+
 %% Scotty Jones Lovers
 
 counter = 1;
