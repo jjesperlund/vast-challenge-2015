@@ -75,6 +75,10 @@ end
 
 maniacs = park_lovers_checkins(park_lovers_checkins(:,2) > 90);
 
+%% What do the maniacs do at the park?
+
+% See maniacs_investigation.m
+
 
 %% Kiddie Land lovers MALL
 
