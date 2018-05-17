@@ -107,3 +107,9 @@ ylabel('y-coordinate')
 zlabel('checkins')
 title('Disappointed persons: Check-in Histogram (Sunday)')
 
+%% Animation of their movements
+
+coordinates(:,1) = parsed_data_saturday.xCoordinates( parsed_data_saturday.id == early_birds_sat(1) ,:);
+coordinates(:,2) = parsed_data_saturday.yCoordinates( parsed_data_saturday.id == early_birds_sat(1) ,:);
+
+comet(coordinates(:,1), coordinates(:,2));
