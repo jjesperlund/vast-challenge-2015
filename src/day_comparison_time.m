@@ -454,7 +454,7 @@ for i = 1:length(ID_timestamp_sun)
     end
 end
 
-%% How many checkins did they do?
+%% How many checkins did the late birds do?
 % Run for-loops separately to avoid error
 for i = 1:length(late_birds_fri)
     late_birds_fri_checkins(i,1) = late_birds_fri(i);
@@ -468,6 +468,10 @@ for i = 1:length(late_birds_sun)
     late_birds_sun_checkins(i,1) = late_birds_sun(i);
     late_birds_sun_checkins(i,2) = checkins_sun( find(checkins_sun(:,1) == late_birds_sun(i)), 2);
 end
+
+%% Where did the late birds go?
+
+% See late_birds_investigation.m
 
 %% Plot "Late birds" arrivals and departures
 
