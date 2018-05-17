@@ -6,12 +6,12 @@ clear one_day_visitors_coordinates
 clear i_fri
 clear c_fri
 
-i_fri = find(IDs_and_coordinates_fri(:,1) == only_friday(1,1));
+i_fri = find(IDs_and_coordinates_fri(:,1) == only_friday(1));
 c_fri = IDs_and_coordinates_fri(i_fri, 2:3);
 one_day_visitors_coordinates(1:length(c_fri),:) = c_fri;
 
 for i = 2:length(only_friday)
-    i_fri = find(IDs_and_coordinates_fri(:,1) == only_friday(i,1));
+    i_fri = find(IDs_and_coordinates_fri(:,1) == only_friday(i));
     c_fri = IDs_and_coordinates_fri(i_fri, 2:3);
     
     %park_lovers_coordinates = [park_lovers_coordinates ; c_fri];
@@ -21,7 +21,7 @@ end
 maxX = max(one_day_visitors_coordinates(:,1));
 maxY = max(one_day_visitors_coordinates(:,2));
 
-histogram2(one_day_visitors_coordinates(:,1), only_friday_coordinates(:,2), 30,'DisplayStyle','tile','ShowEmptyBins','on', ...
+histogram2(one_day_visitors_coordinates(:,1), one_day_visitors_coordinates(:,2), 30,'DisplayStyle','tile','ShowEmptyBins','on', ...
     'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
 set(gca, 'FontSize', 15)
 colormap parula
@@ -34,7 +34,7 @@ axis equal
 xlabel('x-coordinate')
 ylabel('y-coordinate')
 zlabel('checkins')
-title('Park Lovers: Check-in Histogram (Friday)')
+title('One day visitors: Check-in Histogram (Friday)')
 
 
 %% Saturday Checkins
@@ -42,12 +42,12 @@ clear one_day_visitors_coordinates
 clear i_sat
 clear c_sat
 
-i_sat = find(IDs_and_coordinates_sat(:,1) == only_saturday(1,1));
+i_sat = find(IDs_and_coordinates_sat(:,1) == only_saturday(1));
 c_sat = IDs_and_coordinates_sat(i_sat, 2:3);
 one_day_visitors_coordinates(1:length(c_sat),:) = c_sat;
 
 for i = 2:length(only_saturday)
-    i_sat = find(IDs_and_coordinates_sat(:,1) == only_saturday(i,1));
+    i_sat = find(IDs_and_coordinates_sat(:,1) == only_saturday(i));
     c_sat = IDs_and_coordinates_sat(i_sat, 2:3);
     
     %park_lovers_coordinates = [park_lovers_coordinates ; c_fri];
@@ -70,19 +70,19 @@ axis equal
 xlabel('x-coordinate')
 ylabel('y-coordinate')
 zlabel('checkins')
-title('Park Lovers: Check-in Histogram (Saturday)')
+title('One day visitors: Check-in Histogram (Saturday)')
 
 %% Sunday Checkins
-clear park_lovers_coordinates
+clear one_day_visitors_coordinates
 clear i_sun
 clear c_sun
 
-i_sun = find(IDs_and_coordinates_sun(:,1) == only_sunday(1,1));
+i_sun = find(IDs_and_coordinates_sun(:,1) == only_sunday(1));
 c_sun = IDs_and_coordinates_sun(i_sun, 2:3);
 one_day_visitors_coordinates(1:length(c_sun),:) = c_sun;
 
 for i = 2:length(only_sunday)
-    i_sun = find(IDs_and_coordinates_sun(:,1) == only_sunday(i,1));
+    i_sun = find(IDs_and_coordinates_sun(:,1) == only_sunday(i));
     c_sun = IDs_and_coordinates_sun(i_sun, 2:3);
     
     %park_lovers_coordinates = [park_lovers_coordinates ; c_fri];
@@ -92,7 +92,7 @@ end
 maxX = max(one_day_visitors_coordinates(:,1));
 maxY = max(one_day_visitors_coordinates(:,2));
 
-histogram2(park_lovers_coordinates(:,1), park_lovers_coordinates(:,2), 30,'DisplayStyle','tile','ShowEmptyBins','on', ...
+histogram2(one_day_visitors_coordinates(:,1), one_day_visitors_coordinates(:,2), 30,'DisplayStyle','tile','ShowEmptyBins','on', ...
     'XBinLimits',[0 maxX],'YBinLimits',[0 maxY]);
 set(gca, 'FontSize', 15)
 colormap parula
@@ -105,7 +105,7 @@ axis equal
 xlabel('x-coordinate')
 ylabel('y-coordinate')
 zlabel('checkins')
-title('Park Lovers: Check-in Histogram (Sunday)')
+title('One day visitors: Check-in Histogram (Sunday)')
 
 %% Friday park lovers checkins over time (hours)
 
