@@ -36,16 +36,16 @@ title('Disappointed persons: Check-in Histogram (Friday)')
 
 
 %% Saturday Checkins
-clear early_coordinates
+clear eearly_coordinates
 clear i_sat
 clear c_sat
 
-i_sat = find(IDs_and_coordinates_sat(:,1) == early_birds_sat(1));
+i_sat = find(IDs_and_coordinates_sat(:,1) == early_birds_sat(1,1));
 c_sat = IDs_and_coordinates_sat(i_sat, 2:3);
 early_coordinates(1:length(c_sat),:) = c_sat;
 
 for i = 2:length(early_birds_sat)
-    i_sat = find(IDs_and_coordinates_sat(:,1) == early_birds_sat(i));
+    i_sat = find(IDs_and_coordinates_sat(:,1) == early_birds_sat(i,1));
     c_sat = IDs_and_coordinates_sat(i_sat, 2:3);
     
     %park_lovers_coordinates = [park_lovers_coordinates ; c_fri];
@@ -75,18 +75,16 @@ clear early_coordinates
 clear i_sun
 clear c_sun
 
-i_sun = find(IDs_and_coordinates_sun(:,1) == early_birds_sun(1));
+i_sun = find(IDs_and_coordinates_sun(:,1) == early_birds_sun(1,1));
 c_sun = IDs_and_coordinates_sun(i_sun, 2:3);
 early_coordinates(1:length(c_sun),:) = c_sun;
 
 for i = 2:length(early_birds_sun)
-    i_sun = find(IDs_and_coordinates_sun(:,1) == early_birds_sun(i));
+    i_sun = find(IDs_and_coordinates_sun(:,1) == early_birds_sun(i,1));
     c_sun = IDs_and_coordinates_sun(i_sun, 2:3);
     
-    early_coordinates(end+1:end+length(c_sun), :) = c_sun;
-
     %park_lovers_coordinates = [park_lovers_coordinates ; c_fri];
-    
+    early_coordinates(end+1:end+length(c_sun), :) = c_sun;
 end
 
 maxX = max(early_coordinates(:,1));
