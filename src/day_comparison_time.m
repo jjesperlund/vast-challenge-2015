@@ -469,6 +469,18 @@ for i = 1:length(late_birds_sun)
     late_birds_sun_checkins(i,2) = checkins_sun( find(checkins_sun(:,1) == late_birds_sun(i)), 2);
 end
 
+%% Create late_birds_checkins_all_days and plot number of check-in per ID in late birds
+
+late_birds_checkins_all_days(1:2, :) = late_birds_fri_checkins;
+late_birds_checkins_all_days(3:2+49, :) = late_birds_sat_checkins;
+late_birds_checkins_all_days(52:51+23, :) = late_birds_sun_checkins;
+
+%% Plot 
+
+late_birds_checkins_all_days = unique(late_birds_checkins_all_days, 'Rows');
+bar(late_birds_checkins_all_days(:,1), late_birds_checkins_all_days(:,2), 1)
+
+
 %% Where did the late birds go?
 
 % See late_birds_investigation.m
